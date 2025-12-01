@@ -35,7 +35,8 @@ jobs:
 
       - name: Package installer
         run: |
-          iscc installer\new_demo.iss
+          set SOURCE_ROOT=%GITHUB_WORKSPACE%
+          iscc /DSOURCE_ROOT=%SOURCE_ROOT% installer\new_demo.iss
 
       - name: Upload release folder
         uses: actions/upload-artifact@v4

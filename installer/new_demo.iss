@@ -1,4 +1,9 @@
 [Setup]
+#if Defined(SOURCE_ROOT)
+#define RootPath "{#SOURCE_ROOT}"
+#else
+#define RootPath "{#SourcePath}\\.."
+#endif
 AppName=new_demo
 AppVersion=1.0.0
 DefaultDirName={pf}\new_demo
@@ -8,10 +13,10 @@ OutputBaseFilename=new_demo_installer
 Compression=lzma
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
-SetupIconFile={#SourcePath}\..\windows\runner\resources\app_icon.ico
+SetupIconFile={#RootPath}\windows\runner\resources\app_icon.ico
 
 [Files]
-Source: "{#SourcePath}\\..\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+Source: "{#RootPath}\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\new_demo"; Filename: "{app}\new_demo.exe"
