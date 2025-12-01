@@ -1,9 +1,4 @@
 [Setup]
-#if Defined(SOURCE_ROOT)
-#define RootPath "{#SOURCE_ROOT}"
-#else
-#define RootPath "{#SourcePath}\\.."
-#endif
 AppName=new_demo
 AppVersion=1.0.0
 DefaultDirName={pf}\new_demo
@@ -13,12 +8,22 @@ OutputBaseFilename=new_demo_installer
 Compression=lzma
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
-#if FileExists("{#RootPath}\\windows\\runner\\resources\\app_icon.ico")
-SetupIconFile={#RootPath}\\windows\\runner\\resources\\app_icon.ico
+#if Defined(SOURCE_ROOT)
+  #if FileExists("{#SOURCE_ROOT}\\windows\\runner\\resources\\app_icon.ico")
+    SetupIconFile={#SOURCE_ROOT}\\windows\\runner\\resources\\app_icon.ico
+  #endif
+#else
+  #if FileExists("{#SourcePath}\\..\\windows\\runner\\resources\\app_icon.ico")
+    SetupIconFile={#SourcePath}\\..\\windows\\runner\\resources\\app_icon.ico
+  #endif
 #endif
 
 [Files]
-Source: "{#RootPath}\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+#if Defined(SOURCE_ROOT)
+Source: "{#SOURCE_ROOT}\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+#else
+Source: "{#SourcePath}\\..\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+#endif
 
 [Icons]
 Name: "{group}\new_demo"; Filename: "{app}\new_demo.exe"
