@@ -53,7 +53,7 @@ jobs:
         run: |
           set SOURCE_ROOT=%GITHUB_WORKSPACE%
           echo SOURCE_ROOT=%SOURCE_ROOT%
-          iscc /DSOURCE_ROOT="%SOURCE_ROOT%" installer\new_demo.iss
+          iscc /DSOURCE_ROOT="%SOURCE_ROOT%" /O"installer\dist" /F"new_demo_installer" installer\new_demo.iss
 
       - name: Upload release folder
         uses: actions/upload-artifact@v4

@@ -13,7 +13,9 @@ OutputBaseFilename=new_demo_installer
 Compression=lzma
 SolidCompression=yes
 ArchitecturesInstallIn64BitMode=x64
-SetupIconFile={#RootPath}\windows\runner\resources\app_icon.ico
+#if FileExists("{#RootPath}\\windows\\runner\\resources\\app_icon.ico")
+SetupIconFile={#RootPath}\\windows\\runner\\resources\\app_icon.ico
+#endif
 
 [Files]
 Source: "{#RootPath}\\build\\windows\\x64\\runner\\Release\\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
