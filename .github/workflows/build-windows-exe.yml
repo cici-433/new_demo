@@ -51,9 +51,14 @@ jobs:
       - name: Package installer
         shell: cmd
         run: |
-          set SOURCE_ROOT=%GITHUB_WORKSPACE%
-          echo SOURCE_ROOT=%SOURCE_ROOT%
-          iscc /DSOURCE_ROOT="%SOURCE_ROOT%" /O"installer\dist" /F"new_demo_installer" installer\new_demo.iss
+          echo WORKSPACE=%GITHUB_WORKSPACE%
+          if not exist installer\dist mkdir installer\dist
+          if not exist build\windows\x64\runner\Release\new_demo.exe (
+            echo Build output missing: build\windows\x64\runner\Release\new_demo.exe
+            dir build\windows\x64\runner\Release
+            exit /b 2
+          )
+          iscc /O"installer\dist" /F"new_demo_installer" installer\new_demo.iss
 
       - name: Upload release folder
         uses: actions/upload-artifact@v4
