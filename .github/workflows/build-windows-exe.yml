@@ -1,0 +1,50 @@
+name: build-windows-exe
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.6'
+          channel: 'stable'
+
+      - name: Flutter doctor
+        run: flutter doctor -v
+
+      - name: Enable Windows desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows release
+        run: flutter build windows --release
+
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Package installer
+        run: |
+          iscc installer\new_demo.iss
+
+      - name: Upload release folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: new_demo-windows-release
+          path: build/windows/x64/runner/Release
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: new_demo-installer
+          path: installer/dist
